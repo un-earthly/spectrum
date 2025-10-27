@@ -12,7 +12,7 @@ export function deepMerge<T extends Record<string, any>>(
     for (const key in source) {
       if (isObject(source[key])) {
         if (!target[key]) Object.assign(target, { [key]: {} });
-        deepMerge(target[key], source[key]);
+        deepMerge(target[key] as any, source[key] as any);
       } else {
         Object.assign(target, { [key]: source[key] });
       }
@@ -70,3 +70,7 @@ export function capitalize(str: string): string {
 export function kebabCase(str: string): string {
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 }
+
+// Export class mapping utilities
+export * from './class-mapping';
+export * from './cn';

@@ -33,14 +33,14 @@ export function ThemeProvider({
   const [customThemeOverrides, setCustomThemeOverrides] = useState<Partial<Theme>>({});
 
   const baseThemes = useMemo(() => ({
-    light: customTheme?.light ? deepMerge({}, lightTheme, customTheme.light) : lightTheme,
-    dark: customTheme?.dark ? deepMerge({}, darkTheme, customTheme.dark) : darkTheme
+    light: customTheme?.light ? deepMerge(lightTheme, customTheme.light) : lightTheme,
+    dark: customTheme?.dark ? deepMerge(darkTheme, customTheme.dark) : darkTheme
   }), [customTheme]);
 
   const theme = useMemo(() => {
     const baseTheme = baseThemes[mode];
     return Object.keys(customThemeOverrides).length > 0
-      ? deepMerge({}, baseTheme, customThemeOverrides)
+      ? deepMerge(baseTheme, customThemeOverrides)
       : baseTheme;
   }, [baseThemes, mode, customThemeOverrides]);
 

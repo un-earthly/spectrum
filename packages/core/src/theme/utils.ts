@@ -22,7 +22,7 @@ export function getColor(
     return fallback || '#000000';
   }
 
-  const color = colorPalette[shade as keyof ColorShades];
+  const color = (colorPalette as any)[shade];
   if (!color) {
     console.warn(`Shade "${shade}" not found for color "${colorName}"`);
     return fallback || '#000000';
@@ -84,7 +84,7 @@ export function getTypography(
     return fallback;
   }
 
-  return value;
+  return value as any;
 }
 
 /**
@@ -128,7 +128,7 @@ export function createCSSVariables(theme: Theme, prefix = '--ui'): Record<string
   // Colors
   Object.entries(theme.colors).forEach(([colorName, shades]) => {
     Object.entries(shades).forEach(([shade, value]) => {
-      variables[`${prefix}-color-${colorName}-${shade}`] = value;
+      variables[`${prefix}-color-${colorName}-${shade}`] = value as string;
     });
   });
 
