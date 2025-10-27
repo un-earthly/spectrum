@@ -1,0 +1,44 @@
+{
+  "name": "spectrum",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Spectrum - Cross-platform component library for React and React Native",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "commit": "cz",
+    "prepare": "husky install"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "components",
+    "ui",
+    "design-system"
+  ],
+  "author": "un-earthly",
+  "license": "MIT",
+  "packageManager": "npm@10.0.0",
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/node": "^24.9.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
+    "turbo": "^2.5.8",
+    "typescript": "^5.9.3"
+  }
+}
