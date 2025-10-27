@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { defineVariants, type VariantProps } from '@spectrum/core';
+import { createVariants } from '@spectrum/core';
 import { cn } from '../utils/cn';
 
-const cardVariants = defineVariants({
+const cardVariants = createVariants({
   base: 'rounded-lg border bg-white text-neutral-900 transition-all',
   variants: {
     variant: {
@@ -36,8 +36,12 @@ const cardVariants = defineVariants({
 });
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {
+  extends React.HTMLAttributes<HTMLDivElement> {
+  // Variant props
+  variant?: 'elevated' | 'outlined' | 'filled' | 'gradient';
+  size?: 'sm' | 'md' | 'lg';
+  
+  // Custom props
   header?: React.ReactNode;
   footer?: React.ReactNode;
   pressable?: boolean;
@@ -48,7 +52,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     className, 
     variant, 
     size, 
-    padding, 
+ 
     header, 
     footer, 
     pressable, 
@@ -56,17 +60,44 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     onClick,
     ...props 
   }, ref) => {
-    const Component = pressable ? 'button' : 'div';
     const isInteractive = pressable || onClick;
     
+    if (pressable) {
+      return (
+        <button
+          className={cn(
+            cardVariants({ variant, size }),
+            isInteractive && 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]',
+            className
+          )}
+          onClick={onClick}
+          {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        >
+          {header && (
+            <div className="mb-4 border-b border-neutral-200 pb-4">
+              {header}
+            </div>
+          )}
+          <div>
+            {children}
+          </div>
+          {footer && (
+            <div className="mt-4 border-t border-neutral-200 pt-4">
+              {footer}
+            </div>
+          )}
+        </button>
+      );
+    }
+    
     return (
-      <Component
+      <div
         className={cn(
-          cardVariants({ variant, size, padding }),
+          cardVariants({ variant, size }),
           isInteractive && 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]',
           className
         )}
-        ref={ref as any}
+        ref={ref}
         onClick={onClick}
         {...props}
       >
@@ -75,7 +106,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             {header}
           </div>
         )}
-        <div className={cn(padding === 'none' && size && 'p-6')}>
+        <div>
           {children}
         </div>
         {footer && (
@@ -83,7 +114,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
             {footer}
           </div>
         )}
-      </Component>
+      </div>
     );
   }
 );

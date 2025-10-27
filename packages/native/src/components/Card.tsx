@@ -1,11 +1,12 @@
 import React, { forwardRef } from 'react';
-import { 
-  View, 
+import {
+  View,
   TouchableOpacity,
-  type ViewProps,
-  type ViewStyle 
+  type ViewStyle,
+  type GestureResponderEvent,
+  type TouchableOpacityProps
 } from 'react-native';
-import { defineVariants, useTheme, type VariantProps } from '@spectrum/core';
+import { defineVariants, useTheme } from '@spectrum/core';
 import { useCn, mergeStyles } from '../utils/cn';
 
 const cardVariants = defineVariants<ViewStyle>({
@@ -16,10 +17,11 @@ const cardVariants = defineVariants<ViewStyle>({
   variants: {
     variant: {
       elevated: {
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
         shadowRadius: 8,
-        elevation: 4,
+        elevation: 3,
         borderWidth: 1,
         borderColor: '#E5E5E5'
       },
@@ -28,14 +30,15 @@ const cardVariants = defineVariants<ViewStyle>({
         borderColor: '#D4D4D4'
       },
       filled: {
-        backgroundColor: '#FAFAFA',
+        backgroundColor: '#F5F5F5',
         borderWidth: 0
       },
       gradient: {
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.15,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.12,
         shadowRadius: 12,
-        elevation: 6
+        elevation: 4
       }
     },
     size: {
@@ -56,48 +59,51 @@ const cardVariants = defineVariants<ViewStyle>({
   }
 });
 
-export interface CardProps
-  extends Omit<ViewProps, 'style'>,
-    VariantProps<typeof cardVariants> {
+export interface CardProps extends Omit<TouchableOpacityProps, 'style'> {
   header?: React.ReactNode;
   footer?: React.ReactNode;
   pressable?: boolean;
-  onPress?: () => void;
+  onPress?: (event: GestureResponderEvent) => void;
   className?: string;
   style?: ViewStyle;
   children?: React.ReactNode;
-}
-
-export const Card = forwardRef<View, CardProps>(
-  ({ 
+  variant?: keyof typeof cardVariants.variants.variant;
+  size?: keyof typeof cardVariants.variants.size;
+  padding?: keyof typeof cardVariants.variants.padding;
+} export const Card = forwardRef<React.ElementRef<typeof View> | React.ElementRef<typeof TouchableOpacity>, CardProps>(
+  ({
     className,
     style,
-    variant, 
-    size, 
-    padding, 
-    header, 
-    footer, 
-    pressable, 
+    variant,
+    size,
+    padding,
+    header,
+    footer,
+    pressable,
     onPress,
     children,
-    ...props 
+    ...props
   }, ref) => {
     const theme = useTheme();
     const cn = useCn();
-    
-    const containerStyles = cardVariants({ variant, size, padding });
-    
-    // Apply gradient background for gradient variant
+
+    // Build base styles
+    const containerStyles = {
+      ...cardVariants.base,
+      ...(variant && cardVariants.variants?.variant?.[variant]),
+      ...(size && cardVariants.variants?.size?.[size]),
+      ...(padding && cardVariants.variants?.padding?.[padding])
+    };      // Apply gradient background for gradient variant
     let gradientStyles: ViewStyle = {};
     if (variant === 'gradient') {
       gradientStyles = {
         backgroundColor: theme.colors.primary[50] // Fallback for gradient
       };
     }
-    
+
     const classStyles = className ? cn(className) : {};
     const finalStyles = mergeStyles(containerStyles, gradientStyles, classStyles, style);
-    
+
     const content = (
       <>
         {header && (
@@ -125,11 +131,11 @@ export const Card = forwardRef<View, CardProps>(
         )}
       </>
     );
-    
+
     if (pressable || onPress) {
       return (
         <TouchableOpacity
-          ref={ref as any}
+          ref={ref}
           style={finalStyles}
           onPress={onPress}
           activeOpacity={0.95}
@@ -139,7 +145,7 @@ export const Card = forwardRef<View, CardProps>(
         </TouchableOpacity>
       );
     }
-    
+
     return (
       <View
         ref={ref}

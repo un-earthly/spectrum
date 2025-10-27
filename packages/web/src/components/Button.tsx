@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { defineVariants, type VariantProps } from '@spectrum/core';
+import { createVariants } from '@spectrum/core';
 import { cn } from '../utils/cn';
 
-const buttonVariants = defineVariants({
+const buttonVariants = createVariants({
   base: 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   variants: {
     variant: {
@@ -166,8 +166,14 @@ const buttonVariants = defineVariants({
 });
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'size'> {
+  // Variant props
+  variant?: 'solid' | 'outline' | 'ghost' | 'link' | 'gradient';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'neutral';
+  fullWidth?: boolean;
+  
+  // Custom props
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   loading?: boolean;
@@ -193,7 +199,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         className={cn(
-          buttonVariants({ variant, size, color, fullWidth }),
+          buttonVariants({ variant, size, color, fullWidth: fullWidth ? 'true' : undefined }),
           className
         )}
         ref={ref}

@@ -13,7 +13,7 @@ export function useCn() {
 /**
  * Utility for merging React Native styles
  */
-export function mergeStyles(...styles: (StyleProp<any> | undefined | null | false)[]): StyleProp<any> {
+export function mergeStyles(...styles: (StyleProp<unknown> | undefined | null | false)[]): StyleProp<unknown> {
   const validStyles = styles.filter(Boolean);
   
   if (validStyles.length === 0) return undefined;

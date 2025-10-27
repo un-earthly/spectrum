@@ -1,8 +1,8 @@
 import React, { forwardRef, useState } from 'react';
-import { defineVariants, type VariantProps } from '@spectrum/core';
+import { createVariants } from '@spectrum/core';
 import { cn } from '../utils/cn';
 
-const avatarVariants = defineVariants({
+const avatarVariants = createVariants({
   base: 'relative inline-flex items-center justify-center overflow-hidden bg-neutral-100 font-medium text-neutral-600',
   variants: {
     variant: {
@@ -17,9 +17,7 @@ const avatarVariants = defineVariants({
       lg: 'h-12 w-12 text-lg',
       xl: 'h-16 w-16 text-xl'
     },
-    gradientBorder: {
-      true: 'p-0.5 bg-gradient-to-r from-primary-500 to-secondary-500'
-    }
+
   },
   defaultVariants: {
     variant: 'circular',
@@ -27,7 +25,7 @@ const avatarVariants = defineVariants({
   }
 });
 
-const statusVariants = defineVariants({
+const statusVariants = createVariants({
   base: 'absolute border-2 border-white rounded-full',
   variants: {
     status: {
@@ -47,11 +45,15 @@ const statusVariants = defineVariants({
 });
 
 export interface AvatarProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof avatarVariants> {
+  extends React.HTMLAttributes<HTMLDivElement> {
+  // Variant props
+  variant?: 'circular' | 'rounded' | 'square';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  
+  // Custom props
   src?: string;
   alt?: string;
-  fallback?: string;
+  fallback?: string | React.ReactNode;
   status?: 'online' | 'offline' | 'away' | 'busy';
 }
 
@@ -60,7 +62,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     className, 
     variant, 
     size, 
-    gradientBorder,
+
     src, 
     alt, 
     fallback, 
@@ -75,7 +77,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     const content = (
       <div className={cn(
         avatarVariants({ variant, size }),
-        gradientBorder && 'bg-neutral-100',
+
         className
       )}>
         {showImage && (
@@ -88,7 +90,7 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         )}
         {showFallback && (
           <span className="select-none">
-            {fallback.slice(0, 2).toUpperCase()}
+            {typeof fallback === 'string' ? fallback.slice(0, 2).toUpperCase() : fallback}
           </span>
         )}
         {status && (
@@ -96,18 +98,6 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
         )}
       </div>
     );
-    
-    if (gradientBorder) {
-      return (
-        <div
-          ref={ref}
-          className={cn(avatarVariants({ variant, size, gradientBorder }))}
-          {...props}
-        >
-          {content}
-        </div>
-      );
-    }
     
     return (
       <div ref={ref} {...props}>

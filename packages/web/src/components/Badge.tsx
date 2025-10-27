@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { defineVariants, type VariantProps } from '@spectrum/core';
+import { createVariants } from '@spectrum/core';
 import { cn } from '../utils/cn';
 
-const badgeVariants = defineVariants({
+const badgeVariants = createVariants({
   base: 'inline-flex items-center justify-center font-medium transition-colors',
   variants: {
     variant: {
@@ -72,8 +72,13 @@ const badgeVariants = defineVariants({
 });
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends React.HTMLAttributes<HTMLSpanElement> {
+  // Variant props
+  variant?: 'solid' | 'outline' | 'subtle' | 'gradient';
+  size?: 'sm' | 'md' | 'lg';
+  color?: 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'neutral';
+  shape?: 'rounded' | 'pill' | 'square';
+}
 
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant, size, shape, color, ...props }, ref) => {

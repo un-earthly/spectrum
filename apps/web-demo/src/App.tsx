@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@spectrum/web';
+import { Layout } from './components/Layout';
+import { HomePage } from './pages/HomePage';
+import { ButtonPage } from './pages/ButtonPage';
+import { CardPage } from './pages/CardPage';
+import { InputPage } from './pages/InputPage';
+import { BadgePage } from './pages/BadgePage';
+import { AvatarPage } from './pages/AvatarPage';
+import { PlaygroundPage } from './pages/PlaygroundPage';
+import { ThemeCustomizerPage } from './pages/ThemeCustomizerPage';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/button" element={<ButtonPage />} />
+            <Route path="/card" element={<CardPage />} />
+            <Route path="/input" element={<InputPage />} />
+            <Route path="/badge" element={<BadgePage />} />
+            <Route path="/avatar" element={<AvatarPage />} />
+            <Route path="/playground" element={<PlaygroundPage />} />
+            <Route path="/theme-customizer" element={<ThemeCustomizerPage />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

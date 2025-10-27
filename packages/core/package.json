@@ -1,6 +1,7 @@
 {
   "name": "@spectrum/core",
   "version": "1.0.0",
+  "type": "module",
   "description": "Spectrum Core - Utilities, types, and theme system for cross-platform UI library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

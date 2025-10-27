@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { defineVariants, type VariantProps } from '@spectrum/core';
+import { createVariants } from '@spectrum/core';
 import { cn } from '../utils/cn';
 
-const inputVariants = defineVariants({
+const inputVariants = createVariants({
   base: 'flex w-full rounded-md border bg-white px-3 py-2 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
   variants: {
     variant: {
@@ -17,8 +17,9 @@ const inputVariants = defineVariants({
     },
     state: {
       default: '',
-      error: 'border-error-500 focus-visible:ring-error-500',
-      success: 'border-success-500 focus-visible:ring-success-500'
+      invalid: 'border-error-500 focus-visible:ring-error-500',
+      valid: 'border-success-500 focus-visible:ring-success-500',
+      warning: 'border-warning-500 focus-visible:ring-warning-500'
     }
   },
   defaultVariants: {
@@ -29,8 +30,13 @@ const inputVariants = defineVariants({
 });
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  // Variant props
+  variant?: 'outlined' | 'filled' | 'underlined';
+  size?: 'sm' | 'md' | 'lg';
+  state?: 'default' | 'valid' | 'invalid' | 'warning';
+  
+  // Custom props
   label?: string;
   helperText?: string;
   errorText?: string;
@@ -53,8 +59,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ...props 
   }, ref) => {
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-    const hasError = state === 'error' || errorText;
-    const finalState = hasError ? 'error' : state;
+    const hasError = state === 'invalid' || errorText;
+    const finalState = hasError ? 'invalid' : state;
     
     return (
       <div className="w-full">

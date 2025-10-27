@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc && vite build",
+    "build": "tsc -p tsconfig.build.json && vite build && cp -R dist-types/* dist/ || true && rm -rf dist-types || true",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -35,6 +35,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
+    "@spectrum/core": "workspace:*",
     "@tailwindcss/vite": "^4.1.16",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
