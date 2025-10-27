@@ -13,4 +13,9 @@ export {
 
 // Native-specific exports
 export * from './components/ThemeProvider';
+export * from './components/Button';
+export * from './components/Card';
+export * from './components/Input';
+export * from './components/Badge';
+export * from './components/Avatar';
 export * from './utils/cn';
