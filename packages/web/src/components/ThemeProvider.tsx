@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { 
-  ThemeProvider as CoreThemeProvider, 
+import {
+  ThemeProvider as CoreThemeProvider,
   useTheme,
-  type Theme 
+  type Theme
 } from '@spectrum/core';
 
 interface WebThemeProviderProps {
@@ -15,8 +15,8 @@ interface WebThemeProviderProps {
   onModeChange?: (mode: 'light' | 'dark') => void;
 }
 
-export function ThemeProvider({ 
-  children, 
+export function ThemeProvider({
+  children,
   initialMode = 'light',
   customTheme,
   onModeChange
@@ -46,33 +46,23 @@ function ThemeInjector({ children }: { children: React.ReactNode }) {
 
 function injectThemeVariables(theme: Theme) {
   const root = document.documentElement;
-  
-  // Inject color variables
+
+  // Inject color variables (store as valid CSS color strings — keep original value (hex or any CSS color))
   Object.entries(theme.colors).forEach(([colorName, shades]) => {
     Object.entries(shades).forEach(([shade, value]) => {
-      const rgbValue = hexToRgb(value);
-      root.style.setProperty(`--color-${colorName}-${shade}`, rgbValue);
+      // value is expected to be a CSS color string (hex, rgb(), oklch(), etc.) — use it as-is
+      const cssColor = String(value);
+      root.style.setProperty(`--color-${colorName}-${shade}`, cssColor);
     });
   });
-  
+
   // Inject spacing variables
   Object.entries(theme.spacing).forEach(([size, value]) => {
     root.style.setProperty(`--spacing-${size}`, `${value}px`);
   });
-  
+
   // Inject border radius variables
   Object.entries(theme.borderRadius).forEach(([size, value]) => {
     root.style.setProperty(`--radius-${size}`, `${value}px`);
   });
-}
-
-function hexToRgb(hex: string): string {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!result) return '0 0 0';
-  
-  return [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16)
-  ].join(' ');
 }
