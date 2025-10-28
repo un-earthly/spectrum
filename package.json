@@ -14,7 +14,11 @@
     "test": "turbo run test",
     "clean": "turbo run clean",
     "commit": "cz",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "publish:packages": "pnpm run build && pnpm -r --filter='./packages/*' publish",
+    "version:patch": "pnpm -r --filter='./packages/*' version patch",
+    "version:minor": "pnpm -r --filter='./packages/*' version minor",
+    "version:major": "pnpm -r --filter='./packages/*' version major"
   },
   "config": {
     "commitizen": {

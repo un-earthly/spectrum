@@ -2,25 +2,28 @@
   "name": "@spectrum/core",
   "version": "1.0.0",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Spectrum Core - Utilities, types, and theme system for cross-platform UI library",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./theme": {
       "types": "./dist/theme/index.d.ts",
-      "import": "./dist/theme/index.mjs",
-      "require": "./dist/theme/index.js"
+      "import": "./dist/theme/index.js",
+      "require": "./dist/theme/index.cjs"
     },
     "./variants": {
       "types": "./dist/variants/index.d.ts",
-      "import": "./dist/variants/index.mjs",
-      "require": "./dist/variants/index.js"
+      "import": "./dist/variants/index.js",
+      "require": "./dist/variants/index.cjs"
     }
   },
   "files": [

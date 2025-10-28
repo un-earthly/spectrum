@@ -2,6 +2,9 @@
   "name": "@spectrum/native",
   "version": "1.0.0",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Spectrum Native - React Native components with StyleSheet integration",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

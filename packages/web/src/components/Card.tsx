@@ -36,7 +36,7 @@ const cardVariants = createVariants({
 });
 
 export interface CardProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
   // Variant props
   variant?: 'elevated' | 'outlined' | 'filled' | 'gradient';
   size?: 'sm' | 'md' | 'lg';
@@ -45,6 +45,7 @@ export interface CardProps
   header?: React.ReactNode;
   footer?: React.ReactNode;
   pressable?: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement | HTMLButtonElement>;
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
